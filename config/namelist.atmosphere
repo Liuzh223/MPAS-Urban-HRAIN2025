@@ -1,11 +1,11 @@
 ! HRAIN2025: MPAS-Atmosphere configuration for the 30 km–500 m Hong Kong run.
-! Physics options are explicit and follow the HKUST-MPAS-LIU rainfall branch.
+! Physics options are explicit and the NTDK cutoff follows HKUST-MPAS-Official branch ntdk-grid-cutoff.
 
 &nhyd_model
     config_time_integration_order = 2
     config_dt = 6
-    config_start_time = '2025-08-04_06:00:00'
-    config_run_duration = '2_20:00:00'
+    config_start_time = '2025-08-03_00:00:00'
+    config_run_duration = '3_00:00:00'
 
     ! Optional short duration for a smoke test (inactive).
     !config_run_duration = '03:00:00'
@@ -75,7 +75,7 @@
     config_radt_sw_scheme = 'rrtmg_sw'
     config_sfclayer_scheme = 'sf_monin_obukhov_rev'
 
-    ! rainfall branch: disable non-scale-aware cumulus physics where dx < 10 km.
+    ! ntdk-grid-cutoff branch: disable NTDK where local dx < 10 km.
     config_cu_disable_dx = 10000.0
     config_urban_physics = true
 /
