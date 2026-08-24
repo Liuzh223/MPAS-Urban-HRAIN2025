@@ -14,10 +14,34 @@ run-directory conventions.
 - `mesh/hk_hull_500m_graph.info.part.112`: METIS partition assignment for 112
   MPI tasks.
 
+## Ready-to-use grid and GFS file
+
+The public [v1.0 Release](https://github.com/Liuzh223/HRAIN2025/releases/tag/v1.0)
+provides the grid and WPS intermediate file for the
+`2025-08-03_00:00:00` initial time:
+
+```bash
+curl -fL -O https://github.com/Liuzh223/HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+
+echo "45fcfab80a3ecb5f8db558a4582d8910d1cac236f202ab499bb2b5e8e0e8143d  MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz" \
+  | sha256sum -c -
+
+tar -xzf MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+```
+
+The archive contains only:
+
+- `30km_500m.grid.nc`
+- `GFS:2025-08-03_00`
+
+The graph partition, namelists, vertical-level file, MPAS static datasets,
+executables, initialized `.init.nc`, and model output are not included in the
+Release archive.
+
 ## Experiment summary
 
-- Initialization window: `2025-08-04_00:00:00` to `2025-08-05_00:00:00`
-- Model initial time: `2025-08-04_00:00:00`
+- Initialization time: `2025-08-03_00:00:00`
+- Model initial time: `2025-08-03_00:00:00`
 - Model run duration: `3_00:00:00`
 - Nominal inner/outer mesh spacing: 0.5 km / 30 km
 - Vertical levels: 55
@@ -37,9 +61,13 @@ selects the schemes used by the experiment:
 - YSU orographic gravity-wave drag
 - Cloud-fraction diagnosis and RRTMG longwave/shortwave radiation
 
-The HKUST-MPAS-LIU `rainfall` branch option
-`config_cu_disable_dx = 10000.0` disables the non-scale-aware New Tiedtke
-convection scheme wherever the local mesh spacing is below 10 km.
+The optional NTDK grid cutoff is implemented in
+[HKUST-MPAS-Official](https://github.com/Liuzh223/HKUST-MPAS-Official),
+branch `ntdk-grid-cutoff`. Its exact option is `config_cu_disable_dx`.
+The default value is `0.0`, so the cutoff is disabled by default. This
+experiment sets `config_cu_disable_dx = 10000.0`, disabling New Tiedtke
+convection wherever the local mesh spacing is below 10 km. The option is used
+only with `config_convection_scheme = 'cu_ntiedtke'`.
 
 ## Tutorial run-directory layout
 
@@ -52,7 +80,8 @@ executable is launched. The configuration assumes this layout:
 └── run/
     ├── namelist.init_atmosphere
     ├── namelist.atmosphere
-    ├── GFS:<valid-time>
+    ├── 30km_500m.grid.nc
+    ├── GFS:2025-08-03_00
     └── hk_hull_500m_graph.info.part.112
 ```
 
@@ -65,10 +94,12 @@ and is not duplicated here.
 
 ### GFS initial-condition files
 
-GFS initial-condition files are not stored in this repository. Process the
-required GFS GRIB2 data using the standard WPS `ungrib.exe` workflow, setting
-the WPS intermediate-file prefix to `GFS`. Place the resulting
-`GFS:<valid-time>` files in the run directory before running MPAS-Init.
+GFS intermediate files are not stored in the Git source tree. The v1.0 Release
+provides `GFS:2025-08-03_00` for the configured initial time. For a different
+initial time or an initialization requiring more valid times, process the
+matching GFS GRIB2 data with WPS `ungrib.exe`, use the prefix `GFS`, and
+place every required `GFS:<valid-time>` file in the run directory before
+running MPAS-Init.
 
 ## Decomposition file
 
