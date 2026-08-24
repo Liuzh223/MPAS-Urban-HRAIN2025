@@ -43,10 +43,12 @@ git clone --depth 1 --branch hkust-dev --single-branch \
 
 This is the default source recommended in the installation guide.
 
-### HRAIN2025 NTDK grid-cutoff experiment
+### HRAIN2025 case-specific CU-cutoff and ZT-compatible source
 
-The HRAIN2025 cutoff configuration uses a separate derivative maintained for
-this case:
+The HRAIN2025 comparison configuration uses a separate case-specific source.
+It combines the case-author 10 km CU cutoff with the two active
+`ZT = 0.1 * Z0` assignments used by the existing historical-result workflow.
+Use this source only when those case-specific settings are required.
 
 ```bash
 git clone --depth 1 --branch ntdk-grid-cutoff --single-branch \
@@ -58,6 +60,11 @@ git clone --depth 1 --branch ntdk-grid-cutoff --single-branch \
 HKUST-MPAS main branch and does not represent the default HKUST-MPAS physics
 configuration. The word `Official` above is part of the repository name only.
 There is no separate shell command named `cutoff`.
+
+The source tested for this case is fixed at
+[`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-Official/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
+The `ZT = 0.1 * Z0` behavior originates from upstream HKUST-MPAS commit
+[`562bdb4e5ef63527496b6374d52def06a01a84a0`](https://github.com/HKUST-MPAS/HKUST-MPAS/commit/562bdb4e5ef63527496b6374d52def06a01a84a0).
 
 ## Fastest way to prepare the HRAIN2025 input
 
@@ -159,6 +166,36 @@ For meteorological initialization, restore the linked namelist and check:
 
 ## Run the case
 
+Prepare the run directory after completing Guide 2. The initial-condition file
+and `hk_hull_500m_graph.info.part.112` should already be in `$CASE`.
+
+```bash
+export MPAS_SRC="$HOME/MPAS/HKUST-MPAS"
+# For the HRAIN2025 comparison/cutoff source, use instead:
+# export MPAS_SRC="$HOME/MPAS/HKUST-MPAS-NTDK"
+
+export HRAIN_REPO="$HOME/HRAIN2025"
+export CASE="$HOME/MPAS_CASES/HRAIN2025_30km_500m"
+
+test -d "$CASE"
+cd "$CASE"
+
+ln -sf "$MPAS_SRC/atmosphere_model" .
+cp "$HRAIN_REPO/config/namelist.atmosphere" .
+cp "$MPAS_SRC/streams.atmosphere" .
+ln -sf "$MPAS_SRC"/default_inputs/stream_list.atmosphere.* .
+ln -sf "$MPAS_SRC"/src/core_atmosphere/physics/physics_wrf/files/*TBL .
+ln -sf "$MPAS_SRC"/src/core_atmosphere/physics/physics_wrf/files/*DATA* .
+ln -sf "$MPAS_SRC"/src/core_atmosphere/physics/physics_noahmp/parameters/*TBL .
+
+ls -lh atmosphere_model namelist.atmosphere streams.atmosphere \
+  30km_500m.init.nc hk_hull_500m_graph.info.part.112
+```
+
+The explicit lookup-table and data links mirror the MPAS build/run setup.
+They are listed here even though some installations or earlier tutorial steps
+may already have created them.
+
 The HRAIN2025 reference namelist explicitly selects the following case
 configuration:
 
@@ -226,23 +263,29 @@ released. The following note is only for a future direct comparison with those
 existing results; it is not required for learning MPAS or for a new independent
 experiment.
 
-The reference result code is kept in
-[`Liuzh223/HKUST-MPAS`, branch `rainfall`](https://github.com/Liuzh223/HKUST-MPAS/tree/rainfall).
-In
-`src/core_atmosphere/physics/physics_wrf/module_sf_urban.F`, locate subroutine
-`SFCDIF_URB` and check both `ZT` updates: the first update after `USTAR` is
-calculated and the update inside the stability iteration. For consistency with
-the existing HRAIN2025 results, the final active expression at both locations
-is:
+Use the verified HRAIN2025 case-specific source at
+[`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-Official/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
+This single source contains both the 10 km CU cutoff and the HRAIN2025
+`ZT` compatibility setting; the `rainfall` branch is not required.
+
+In `src/core_atmosphere/physics/physics_wrf/module_sf_urban.F`, subroutine
+`SFCDIF_URB` contains two active `ZT` updates: the first after `USTAR` is
+calculated and the second inside the stability iteration. At both locations,
+the final active expression is:
 
 ```fortran
 ZT = 0.1 * Z0
 ```
 
-Recompile `atmosphere_model` after changing the source. Do not confuse this
-with `Z0HC_TBL = 0.1 * Z0C_TBL`, which is a different calculation. For new
-independent experiments, keep the implementation supplied by the selected code
-version and record its branch or commit.
+Here, `Z0` is the momentum roughness length and `ZT` is the thermal
+roughness length; this setting does not redefine or recalculate `Z0`. Its
+upstream source is HKUST-MPAS commit
+[`562bdb4e5ef63527496b6374d52def06a01a84a0`](https://github.com/HKUST-MPAS/HKUST-MPAS/commit/562bdb4e5ef63527496b6374d52def06a01a84a0).
+The case-specific source already includes the setting, so no manual source edit
+is needed. Check out the exact commit and rebuild `atmosphere_model`. Do not
+confuse it with `Z0HC_TBL = 0.1 * Z0C_TBL`, which is a different calculation.
+For new independent experiments, keep the implementation supplied by the
+selected code version and record its branch or commit.
 
 ## Repository file structure
 
