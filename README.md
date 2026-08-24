@@ -59,7 +59,7 @@ git clone --depth 1 --branch ntdk-grid-cutoff --single-branch \
 `ntdk-grid-cutoff` is a case-author modification. It is not the official
 HKUST-MPAS main branch and does not represent the default HKUST-MPAS physics
 configuration. The word `Official` above is part of the repository name only.
-There is no separate shell command named `cutoff`.
+
 
 The source tested for this case is fixed at
 [`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-Official/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
@@ -266,7 +266,7 @@ experiment.
 Use the verified HRAIN2025 case-specific source at
 [`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-Official/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
 This single source contains both the 10 km CU cutoff and the HRAIN2025
-`ZT` compatibility setting; the `rainfall` branch is not required.
+`ZT` compatibility setting.
 
 In `src/core_atmosphere/physics/physics_wrf/module_sf_urban.F`, subroutine
 `SFCDIF_URB` contains two active `ZT` updates: the first after `USTAR` is
@@ -338,7 +338,7 @@ Affiliation: **The Hong Kong University of Science and Technology (HKUST)**
 
 - [Guide 1 - Install HKUST-MPAS and the MPAS-Urban datasets](docs/MPAS_URBAN_INSTALLATION_GUIDE.pdf)
 - [Guide 2 - Prepare the mesh and initialize HRAIN2025](docs/MPAS_URBAN_INITIALIZATION_GUIDE.pdf)
-- [Guide 3 - Run HRAIN2025 and interpret the case-specific switches](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
+- [Guide 3 - Run HRAIN2025](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
 
 ## Data and software provenance
 
