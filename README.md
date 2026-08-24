@@ -340,6 +340,14 @@ Affiliation: **The Hong Kong University of Science and Technology (HKUST)**
 - [Guide 2 - Prepare the mesh and initialize HRAIN2025](docs/MPAS_URBAN_INITIALIZATION_GUIDE.pdf)
 - [Guide 3 - Run HRAIN2025](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
 
+## Acknowledgements and preparation note
+
+The organization, language editing, and document-formatting workflow for this
+tutorial were prepared with assistance from OpenAI ChatGPT/Codex. All technical
+settings, commands, source-code references, and case-specific scientific
+decisions remain the responsibility of the author, LIU Zhuo. AI assistance is
+not treated as a technical or scientific source.
+
 ## Data and software provenance
 
 MPAS and HKUST-MPAS source redistribution remains subject to the license in the
