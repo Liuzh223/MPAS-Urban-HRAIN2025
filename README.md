@@ -17,8 +17,6 @@ initial condition, and the optional New Tiedtke grid-cutoff modification.
 
 ## HRAIN2025 case
 
-The following description follows *Intercomparison Guidelines v1.1*:
-
 - **Event:** The 2025 Black Rainstorm Event - `HRAIN2025`.
 - **Timespan:** August 2-5, 2025, with the peak on August 5.
 - **Observation highlights:** 358.8 mm on August 5 (355.7 mm at HKO
