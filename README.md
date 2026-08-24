@@ -342,11 +342,9 @@ Affiliation: **The Hong Kong University of Science and Technology (HKUST)**
 
 ## Acknowledgements and preparation note
 
-The organization, language editing, and document-formatting workflow for this
-tutorial were prepared with assistance from OpenAI ChatGPT/Codex. All technical
-settings, commands, source-code references, and case-specific scientific
-decisions remain the responsibility of the author, LIU Zhuo. AI assistance is
-not treated as a technical or scientific source.
+OpenAI ChatGPT/Codex assisted with the organization, language editing, and
+formatting of this tutorial. The author, LIU Zhuo, reviewed and verified all
+technical content.
 
 ## Data and software provenance
 
