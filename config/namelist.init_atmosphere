@@ -8,8 +8,8 @@
 
 &nhyd_model
     config_init_case = 7
-    config_start_time = '2025-08-04_00:00:00'
-    config_stop_time = '2025-08-05_00:00:00'
+    config_start_time = '2025-08-03_00:00:00'
+    config_stop_time = '2025-08-03_00:00:00'
     config_theta_adv_order = 3
     config_coef_3rd_order = 0.25
     config_interface_projection = 'linear_interpolation'
@@ -34,7 +34,7 @@
     config_supersample_factor = 15
     config_30s_supersample_factor = 3
 
-    ! GFS and SST intermediate files are expected in the run directory.
+    ! The GFS:2025-08-03_00 intermediate file is expected in the run directory.
     config_met_prefix = 'GFS'
     config_use_spechumd = false
     config_sfc_prefix = 'SST'
