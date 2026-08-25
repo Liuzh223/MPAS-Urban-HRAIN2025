@@ -66,8 +66,25 @@ or initial-condition files, model output, or GFS files for other times.
 
 - **Case repository:** [Liuzh223/HRAIN2025](https://github.com/Liuzh223/HRAIN2025)
 - **Release page:** [HRAIN2025 v1.0](https://github.com/Liuzh223/HRAIN2025/releases/tag/v1.0)
-- **Direct input archive:** [download the 30 km-500 m grid and GFS 2025-08-03 00 UTC input](https://github.com/Liuzh223/HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz)
-- **SHA-256:** `45fcfab80a3ecb5f8db558a4582d8910d1cac236f202ab499bb2b5e8e0e8143d`
+
+The following commands keep the Git repository and the large input files in
+separate directories:
+
+```bash
+cd "$HOME"
+git clone https://github.com/Liuzh223/HRAIN2025.git
+
+mkdir -p "$HOME/HRAIN2025_INPUT"
+cd "$HOME/HRAIN2025_INPUT"
+
+curl -fL -O \
+  https://github.com/Liuzh223/HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+
+tar -xzf MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+ls -lh 30km_500m.grid.nc GFS:2025-08-03_00
+```
+
+For an optional file-integrity check, see Guide 2.
 
 The Release GFS file is already in WPS intermediate format. Do not run
 `ungrib.exe` on it again. For another initialization date, prepare a complete
