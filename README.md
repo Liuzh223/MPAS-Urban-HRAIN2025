@@ -1,31 +1,98 @@
 # MPAS-Urban HRAIN2025: 30 km-500 m Hong Kong experiment
 
+This repository provides the configuration, reference files, and tutorial
+documents for an MPAS-Urban HRAIN2025 case initialized at
+`2025-08-03_00:00:00`.
+
+## Before you begin
+
 > **New to MPAS-Atmosphere?**
 >
-> This repository is a case-specific example, not a replacement for the
-> official MPAS-Atmosphere tutorial. Before using this case, complete the
+> This is a case-specific example, not a replacement for the official
+> MPAS-Atmosphere tutorial. First complete the
 > [official MPAS-A tutorial](https://mpas-dev.github.io/atmosphere/tutorial.html)
 > or the
 > [MPAS-A Quick Start Guide](https://www2.mmm.ucar.edu/projects/mpas/site/documentation/users_guide/quick_start.html),
 > and confirm that you can compile and run a standard MPAS-Atmosphere case.
 
-## Start here
+The three PDF guides contain the complete commands, namelist changes, checks,
+and explanations. This README is the entry point and map of the case.
 
-Follow the three guides in order. The PDFs contain the complete commands,
-namelist changes, checks, and explanations; this README is only the map of the
-case.
+## Choose your path first
 
-1. [Guide 1 - Install HKUST-MPAS and the MPAS-Urban datasets](docs/MPAS_URBAN_INSTALLATION_GUIDE.pdf)
-2. [Guide 2 - Prepare the mesh and initialize HRAIN2025](docs/MPAS_URBAN_INITIALIZATION_GUIDE.pdf)
-3. [Guide 3 - Run HRAIN2025](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
+Choose one source version before following the installation guide.
 
-> **Beginner shortcut:** use the grid and GFS intermediate file supplied in the
-> v1.0 Release. You do not need to regenerate the mesh or run WPS to reproduce
-> the tutorial case.
+| Your goal | Source version | Suggested local directory |
+|---|---|---|
+| Learn MPAS-Urban or start a new independent experiment | [`HKUST-MPAS/HKUST-MPAS`, branch `hkust-dev`](https://github.com/HKUST-MPAS/HKUST-MPAS/tree/hkust-dev) | `$HOME/MPAS/HKUST-MPAS` |
+| Reproduce the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-LIU`, pinned commit `57b42fa...`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/57b42fa1d7649117bbf28a69c47697ea8756d268) | `$HOME/MPAS/HKUST-MPAS-NTDK` |
 
-## File layout
+The standard `hkust-dev` branch is the default recommendation for learning and
+new experiments. The case-specific source is a user-maintained derivative for
+HRAIN2025. Its `ntdk-grid-cutoff` branch is not the official HKUST-MPAS physics
+configuration.
 
-Repository structure:
+`HKUST-MPAS-LIU` is the GitHub repository name, while `HKUST-MPAS-NTDK` is the
+suggested local directory name used by these guides for the optional cutoff
+build.
+
+> **Compilation is required.** Checking out a branch or commit does not update
+> an existing executable. Compile the selected source to generate
+> `init_atmosphere_model` and `atmosphere_model`. Recompile whenever you change
+> the branch, commit, or relevant source-code settings.
+
+## Follow the tutorial in this order
+
+1. Clone this case repository and download the v1.0 Release input using the
+   commands below.
+2. Follow [Guide 1 - Install HKUST-MPAS and the MPAS-Urban datasets](docs/MPAS_URBAN_INSTALLATION_GUIDE.pdf)
+   to compile the source version you selected.
+3. Follow [Guide 2 - Prepare the mesh and initialize HRAIN2025](docs/MPAS_URBAN_INITIALIZATION_GUIDE.pdf)
+   to generate the static and initial-condition files.
+4. Follow [Guide 3 - Run HRAIN2025](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
+   to prepare the independent case directory and launch the atmosphere model.
+
+> **Beginner shortcut:** use the supplied grid and GFS intermediate file. You
+> do not need to regenerate the mesh or run WPS for the tutorial date.
+
+Static-field generation for this large global variable-resolution mesh may
+require several hours. Guide 2 provides planning estimates, checks, and ideas
+for inspecting the mesh while the job runs.
+
+## Download the case and supplied input
+
+- **Case repository:** [Liuzh223/MPAS-Urban-HRAIN2025](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025)
+- **Release page:** [HRAIN2025 v1.0](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/tag/v1.0)
+
+The Git repository contains the documentation and small configuration files.
+The separate Release contains the large grid and GFS intermediate file.
+
+```bash
+export MPAS_ROOT="$HOME/MPAS"
+mkdir -p "$MPAS_ROOT"
+cd "$MPAS_ROOT"
+
+git clone https://github.com/Liuzh223/MPAS-Urban-HRAIN2025.git
+
+mkdir -p "$MPAS_ROOT/HRAIN2025_INPUT"
+cd "$MPAS_ROOT/HRAIN2025_INPUT"
+
+curl -fL -O \
+  https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+
+tar -xzf MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+ls -lh 30km_500m.grid.nc GFS:2025-08-03_00
+```
+
+For an optional file-integrity check, see Guide 2.
+
+The supplied `GFS:2025-08-03_00` file is already in WPS intermediate format;
+do not run `ungrib.exe` on it again. For another initialization date, prepare
+all matching intermediate files as explained at the end of Guide 2.
+
+## What the downloads contain
+
+The Git repository contains:
 
 ```text
 MPAS-Urban-HRAIN2025/
@@ -42,7 +109,7 @@ MPAS-Urban-HRAIN2025/
     `-- hk_hull_500m_graph.info.part.112
 ```
 
-The separate v1.0 Release archive contains:
+The v1.0 Release archive contains only the supplied case input:
 
 ```text
 MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
@@ -50,7 +117,14 @@ MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
 `-- GFS:2025-08-03_00
 ```
 
-Recommended local structure:
+The repository and Release do **not** contain MPAS executables, standard MPAS
+static data, CGLC-LCZ data, `vertical_levels/urban_ZR_75.txt`, generated static
+or initial-condition files, model output, or GFS files for other times.
+
+## Recommended local workspace
+
+Keep the source builds, datasets, case input, and independent run directory
+under one MPAS root:
 
 ```text
 $HOME/MPAS/
@@ -62,102 +136,21 @@ $HOME/MPAS/
 `-- HRAIN2025_30km_500m/        # independent case directory
 ```
 
-The three PDF guides define `MPAS_BUILD` as a tutorial-defined shell variable
-that points to the compiled MPAS source directory selected for one case. It is
-not an official MPAS environment variable or namelist option. For the standard
-compiled source shown above, set and check it with:
+The guides define `MPAS_BUILD` as a tutorial shell variable pointing to the
+compiled source selected for one case. It is not an official MPAS environment
+variable or namelist option.
+
+For the standard build:
 
 ```bash
 export MPAS_BUILD="$HOME/MPAS/HKUST-MPAS"
 test -x "$MPAS_BUILD/atmosphere_model"
 ```
 
-For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-NTDK`
-instead. Keep all runtime links in one case from the same `MPAS_BUILD`.
-
-The repository and Release do **not** contain MPAS executables, standard MPAS
-static data, CGLC-LCZ data, `vertical_levels/urban_ZR_75.txt`, generated static
-or initial-condition files, model output, or GFS files for other times.
-
-## Download the case files
-
-- **Case repository:** [Liuzh223/MPAS-Urban-HRAIN2025](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025)
-- **Release page:** [HRAIN2025 v1.0](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/tag/v1.0)
-
-The following commands keep the Git repository and large input files in separate
-directories under one MPAS root:
-
-```bash
-export MPAS_ROOT="$HOME/MPAS"
-mkdir -p "$MPAS_ROOT"
-cd "$MPAS_ROOT"
-git clone https://github.com/Liuzh223/MPAS-Urban-HRAIN2025.git
-
-mkdir -p "$MPAS_ROOT/HRAIN2025_INPUT"
-cd "$MPAS_ROOT/HRAIN2025_INPUT"
-
-curl -fL -O \
-  https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
-
-tar -xzf MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
-ls -lh 30km_500m.grid.nc GFS:2025-08-03_00
-```
-
-For an optional file-integrity check, see Guide 2.
-
-The Release GFS file is already in WPS intermediate format. Do not run
-`ungrib.exe` on it again. For another initialization date, prepare a complete
-set of matching intermediate files as explained at the end of Guide 2.
-
-## Choose one source-code version
-
-There are two code choices. Select the one that matches your purpose before
-following Guide 1.
-
-| Version | Use it when | Source |
-|---|---|---|
-| Standard HKUST-MPAS | Learning MPAS-Urban or starting a new independent experiment | [`HKUST-MPAS/HKUST-MPAS`, branch `hkust-dev`](https://github.com/HKUST-MPAS/HKUST-MPAS/tree/hkust-dev) |
-| HRAIN2025 case-specific source | Reproducing the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-LIU`, branch `ntdk-grid-cutoff`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff) |
-
-The standard `hkust-dev` branch is the default recommendation for learning and
-new experiments.
-
-`ntdk-grid-cutoff` is a case-author modification and does not represent the
-default HKUST-MPAS physics configuration. `HKUST-MPAS-LIU` is a user-maintained
-derivative for this case; it is not the official HKUST-MPAS main repository.
-
-### Compile the selected source
-
-Checking out a branch or commit does not update an existing MPAS executable.
-After selecting a source version, compile it to generate
-`init_atmosphere_model` and `atmosphere_model` before continuing.
-
-If you change the branch, commit, or source-code settings, recompile the model.
-An executable built from another version does not contain the selected
-HRAIN2025 modifications.
-
-The guides use `MPAS_BUILD` to link the independent case to one selected
-compiled source. The executable, streams files, stream lists, physics tables,
-and data links for that case must come from the same build. When comparing two
-source versions, create separate case directories instead of relinking a case
-that has already produced output.
-
-## Beginner workflow
-
-1. Complete an official MPAS tutorial.
-2. Choose the standard or case-specific source above.
-3. Follow Guide 1 to compile the model and prepare MPAS-Urban datasets.
-4. Download the HRAIN2025 repository and v1.0 Release input.
-5. Follow Guide 2 to create the static and initial-condition files.
-6. Follow Guide 3 to prepare the run directory and run the atmosphere model.
-
-Static-field generation for this large global variable-resolution mesh may
-require several hours. Guide 2 provides planning estimates and suggestions for
-monitoring the job while it runs.
-
-For the supplied case, mesh generation is optional. Use
-`mesh/generate_hk_500m_mesh.py` only when changing the refinement region or
-independently testing the mesh-generation workflow.
+For the optional HRAIN2025 cutoff build, set `MPAS_BUILD` to
+`$HOME/MPAS/HKUST-MPAS-NTDK`. The executable, streams files, stream lists,
+physics tables, and data links for one case must all come from the same build.
+Use separate case directories when comparing source versions.
 
 ## HRAIN2025 at a glance
 
@@ -171,9 +164,6 @@ independently testing the mesh-generation workflow.
   500 m over the innermost refinement region.
 - **Default decomposition:** 112 MPI tasks.
 
-Important run settings are summarized below. Guide 3 explains where and when
-to set them.
-
 | Setting | HRAIN2025 value |
 |---|---|
 | Run duration | `3_00:00:00` |
@@ -183,14 +173,14 @@ to set them.
 | Urban physics | enabled |
 | Optional CU cutoff | `config_cu_disable_dx = 10000.0`, case-specific source only |
 
-The full physics configuration and all required symbolic links are listed in
-Guide 3. When using the standard `hkust-dev` source, remove or comment out
-`config_cu_disable_dx`; that switch is available only in the cutoff-capable
+Guide 3 contains the complete physics configuration and required symbolic
+links. With the standard `hkust-dev` source, remove or comment out
+`config_cu_disable_dx`; this switch is available only in the cutoff-capable
 case-specific build.
 
-## Which files are edited
+## Reference configuration files
 
-| Stage | Main files | Detailed instructions |
+| Stage | Main files | Instructions |
 |---|---|---|
 | Installation | build configuration and MPAS-Urban datasets | Guide 1 |
 | Static interpolation | `namelist.init_atmosphere`, `streams.init_atmosphere` | Guide 2 |
@@ -202,17 +192,17 @@ Reference namelists:
 - [`config/namelist.init_atmosphere`](config/namelist.init_atmosphere)
 - [`config/namelist.atmosphere`](config/namelist.atmosphere)
 
-## HRAIN2025 case-specific reproducibility settings
+## Case-specific reproducibility settings
 
-The following settings reproduce the case-author HRAIN2025 configuration.
-They are case-specific choices, not general MPAS-Urban recommendations, and
-should not be copied to another experiment without separate justification.
+This section is only for reproducing the case-author HRAIN2025 configuration.
+These are case-specific choices, not general MPAS-Urban recommendations.
 
-- Use the case-specific source at commit
+- Use the pinned source commit
   [`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
-- This source includes the 10 km CU cutoff used for HRAIN2025.
-- It also includes the two active `ZT = 0.1 * Z0` assignments used by the
-  historical experiment, so no manual source edit is required.
+- The pinned source contains the 10 km CU cutoff used for this case.
+- It also contains the two active `ZT = 0.1 * Z0` assignments used by the
+  historical experiment, so no manual source edit or rainfall-branch checkout
+  is required.
 
 The `ZT` implementation originates from upstream HKUST-MPAS commit
 [`562bdb4e5ef63527496b6374d52def06a01a84a0`](https://github.com/HKUST-MPAS/HKUST-MPAS/commit/562bdb4e5ef63527496b6374d52def06a01a84a0).
@@ -220,30 +210,38 @@ It changes the thermal roughness-length treatment and does not redefine or
 recalculate `Z0`.
 
 The corresponding historical simulation results have not yet been publicly
-released. These settings are documented for provenance and possible future
-comparison. They are not required for learning MPAS or running a new
-independent experiment.
+released. These settings document provenance for possible future comparison;
+they are not required for learning MPAS or running a new independent
+experiment.
 
-## Mesh boundary and provenance
+## Optional mesh generation
+
+For the supplied case, mesh generation is optional. Use
+`mesh/generate_hk_500m_mesh.py` only when changing the refinement region or
+independently testing the mesh-generation workflow.
 
 The Hong Kong boundary used by the case author was downloaded through the
 [Aliyun DataV area selector](https://datav.aliyun.com/portal/school/atlas/area_selector)
-and saved as `mesh/hongkong.geojson`. Aliyun DataV is a third-party service and
-is not an official Hong Kong SAR Government boundary source. Archive the exact
-GeoJSON used for a reproduction, check its terms before redistribution, and
-note that replacing the boundary may change the generated mesh.
+and stored locally as `mesh/hongkong.geojson`. Aliyun DataV is a third-party
+service and is not an official Hong Kong SAR Government boundary source.
+Archive the exact GeoJSON used for a reproduction, check its terms before
+redistribution, and note that replacing the boundary may change the mesh.
+
+## Licensing and attribution
 
 MPAS and HKUST-MPAS source redistribution remains subject to the license in the
 corresponding source repository. GFS input originates from NOAA/NCEP. Retain
 the attribution required by each source and do not imply endorsement by NOAA,
 HKUST, Aliyun, or the Hong Kong SAR Government.
 
-## Documentation and preparation note
+## Documentation note
 
 Tutorial author: **LIU Zhuo**
 
 Affiliation: **The Hong Kong University of Science and Technology (HKUST)**
 
 OpenAI ChatGPT/Codex assisted with the organization, language editing, and
-formatting of this tutorial. The author, LIU Zhuo, reviewed and verified all
-technical content.
+formatting of this tutorial. All technical settings, commands, source-code
+references, and case-specific scientific decisions remain the responsibility
+of the author, LIU Zhuo. AI assistance is not treated as a technical or
+scientific source.
