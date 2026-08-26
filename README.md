@@ -70,8 +70,18 @@ $HOME/MPAS/
 `-- HRAIN2025_30km_500m/        # independent case directory
 ```
 
-`MPAS_BUILD` selects one compiled source for a case. Keep all runtime links in
-that case from the same build.
+The three PDF guides define `MPAS_BUILD` as a tutorial-defined shell variable
+that points to the compiled MPAS source directory selected for one case. It is
+not an official MPAS environment variable or namelist option. For the standard
+compiled source shown above, set and check it with:
+
+```bash
+export MPAS_BUILD="$HOME/MPAS/HKUST-MPAS"
+test -x "$MPAS_BUILD/atmosphere_model"
+```
+
+For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-NTDK`
+instead. Keep all runtime links in one case from the same `MPAS_BUILD`.
 
 The repository and Release do **not** contain MPAS executables, standard MPAS
 static data, CGLC-LCZ data, `vertical_levels/urban_ZR_75.txt`, generated static
