@@ -127,6 +127,10 @@ HRAIN2025 modifications.
 5. Follow Guide 2 to create the static and initial-condition files.
 6. Follow Guide 3 to prepare the run directory and run the atmosphere model.
 
+Static-field generation for this large global variable-resolution mesh may
+require several hours. Guide 2 provides planning estimates and suggestions for
+monitoring the job while it runs.
+
 For the supplied case, mesh generation is optional. Use
 `mesh/generate_hk_500m_mesh.py` only when changing the refinement region or
 independently testing the mesh-generation workflow.
