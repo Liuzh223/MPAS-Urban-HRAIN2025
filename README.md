@@ -131,22 +131,6 @@ For the supplied case, mesh generation is optional. Use
 `mesh/generate_hk_500m_mesh.py` only when changing the refinement region or
 independently testing the mesh-generation workflow.
 
-### Guide 2 runs `init_atmosphere_model` twice
-
-1. **Static-field run:** create `30km_500m.static.nc` from the mesh and the
-   selected static geographic and CGLC-LCZ datasets. This file is not tied to
-   the HRAIN2025 initialization time and has no forecast duration. Create it
-   before the initial-condition run, and reuse it only when the mesh, datasets,
-   and static-stage settings are unchanged.
-2. **Initial-condition run:** create `30km_500m.init.nc` for
-   `2025-08-03_00:00:00` from the static file and `GFS:2025-08-03_00`. In
-   `namelist.init_atmosphere`, set both `config_start_time` and
-   `config_stop_time` to `2025-08-03_00:00:00`.
-
-The timestamp above is the model-valid initialization time, not an estimate of
-wall-clock processing time. Actual processing time depends on the machine and
-MPI configuration. Guide 2 provides the complete settings for both runs.
-
 ## HRAIN2025 at a glance
 
 - **Event:** the Hong Kong Black Rainstorm Event of August 2-5, 2025, with the
