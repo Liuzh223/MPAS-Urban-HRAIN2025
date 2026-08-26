@@ -25,7 +25,7 @@ Choose one source version before following the installation guide.
 | Your goal | Source version | Suggested local directory |
 |---|---|---|
 | Learn MPAS-Urban or start a new independent experiment | [`HKUST-MPAS/HKUST-MPAS`, branch `hkust-dev`](https://github.com/HKUST-MPAS/HKUST-MPAS/tree/hkust-dev) | `$HOME/MPAS/HKUST-MPAS` |
-| Reproduce the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-LIU`, pinned commit `57b42fa...`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/57b42fa1d7649117bbf28a69c47697ea8756d268) | `$HOME/MPAS/HKUST-MPAS-NTDK` |
+| Reproduce the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU), branch [`ntdk-grid-cutoff`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff), pinned commit [`57b42fa...`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/57b42fa1d7649117bbf28a69c47697ea8756d268) | `$HOME/MPAS/HKUST-MPAS-NTDK` |
 
 The standard `hkust-dev` branch is the default recommendation for learning and
 new experiments. The case-specific source is a user-maintained derivative for
@@ -226,13 +226,6 @@ and stored locally as `mesh/hongkong.geojson`. Aliyun DataV is a third-party
 service and is not an official Hong Kong SAR Government boundary source.
 Archive the exact GeoJSON used for a reproduction, check its terms before
 redistribution, and note that replacing the boundary may change the mesh.
-
-## Licensing and attribution
-
-MPAS and HKUST-MPAS source redistribution remains subject to the license in the
-corresponding source repository. GFS input originates from NOAA/NCEP. Retain
-the attribution required by each source and do not imply endorsement by NOAA,
-HKUST, Aliyun, or the Hong Kong SAR Government.
 
 ## Documentation note
 
