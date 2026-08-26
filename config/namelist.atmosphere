@@ -1,5 +1,5 @@
 ! HRAIN2025: MPAS-Atmosphere configuration for the 30 km–500 m Hong Kong run.
-! Physics options are explicit and the NTDK cutoff follows HKUST-MPAS-Official branch ntdk-grid-cutoff.
+! Physics options are explicit and the NTDK cutoff follows HKUST-MPAS-LIU branch ntdk-grid-cutoff.
 
 &nhyd_model
     config_time_integration_order = 2

@@ -1,4 +1,4 @@
-# HRAIN2025: 30 km-500 m Hong Kong MPAS experiment
+# MPAS-Urban HRAIN2025: 30 km-500 m Hong Kong experiment
 
 > **New to MPAS-Atmosphere?**
 >
@@ -28,7 +28,7 @@ case.
 Repository structure:
 
 ```text
-HRAIN2025/
+MPAS-Urban-HRAIN2025/
 |-- README.md
 |-- config/
 |   |-- namelist.init_atmosphere
@@ -55,9 +55,9 @@ Recommended local structure:
 ```text
 $HOME/MPAS/
 |-- HKUST-MPAS/                 # standard compiled source
-|-- HKUST-MPAS-NTDK/            # optional case-specific compiled source
+|-- HKUST-MPAS-LIU/             # optional case-specific compiled source
 |-- DATA/mpas_static/           # standard and CGLC-LCZ static data
-|-- HRAIN2025/                  # this Git repository
+|-- MPAS-Urban-HRAIN2025/       # this Git repository
 |-- HRAIN2025_INPUT/            # Release grid and GFS file
 `-- HRAIN2025_30km_500m/        # independent case directory
 ```
@@ -72,7 +72,7 @@ export MPAS_BUILD="$HOME/MPAS/HKUST-MPAS"
 test -x "$MPAS_BUILD/atmosphere_model"
 ```
 
-For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-NTDK`
+For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-LIU`
 instead. Keep all runtime links in one case from the same `MPAS_BUILD`.
 
 The repository and Release do **not** contain MPAS executables, standard MPAS
@@ -81,8 +81,8 @@ or initial-condition files, model output, or GFS files for other times.
 
 ## Download the case files
 
-- **Case repository:** [Liuzh223/HRAIN2025](https://github.com/Liuzh223/HRAIN2025)
-- **Release page:** [HRAIN2025 v1.0](https://github.com/Liuzh223/HRAIN2025/releases/tag/v1.0)
+- **Case repository:** [Liuzh223/MPAS-Urban-HRAIN2025](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025)
+- **Release page:** [HRAIN2025 v1.0](https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/tag/v1.0)
 
 The following commands keep the Git repository and large input files in separate
 directories under one MPAS root:
@@ -91,13 +91,13 @@ directories under one MPAS root:
 export MPAS_ROOT="$HOME/MPAS"
 mkdir -p "$MPAS_ROOT"
 cd "$MPAS_ROOT"
-git clone https://github.com/Liuzh223/HRAIN2025.git
+git clone https://github.com/Liuzh223/MPAS-Urban-HRAIN2025.git
 
 mkdir -p "$MPAS_ROOT/HRAIN2025_INPUT"
 cd "$MPAS_ROOT/HRAIN2025_INPUT"
 
 curl -fL -O \
-  https://github.com/Liuzh223/HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
+  https://github.com/Liuzh223/MPAS-Urban-HRAIN2025/releases/download/v1.0/MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
 
 tar -xzf MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
 ls -lh 30km_500m.grid.nc GFS:2025-08-03_00
@@ -117,15 +117,14 @@ following Guide 1.
 | Version | Use it when | Source |
 |---|---|---|
 | Standard HKUST-MPAS | Learning MPAS-Urban or starting a new independent experiment | [`HKUST-MPAS/HKUST-MPAS`, branch `hkust-dev`](https://github.com/HKUST-MPAS/HKUST-MPAS/tree/hkust-dev) |
-| HRAIN2025 case-specific source | Reproducing the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-Official`, branch `ntdk-grid-cutoff`](https://github.com/Liuzh223/HKUST-MPAS-Official/tree/ntdk-grid-cutoff) |
+| HRAIN2025 case-specific source | Reproducing the case-author HRAIN2025 configuration | [`Liuzh223/HKUST-MPAS-LIU`, branch `ntdk-grid-cutoff`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff) |
 
 The standard `hkust-dev` branch is the default recommendation for learning and
 new experiments.
 
 `ntdk-grid-cutoff` is a case-author modification and does not represent the
-default HKUST-MPAS physics configuration. The word `Official` is part of the
-repository name only; it does not mean that this derivative is the official
-HKUST-MPAS main version.
+default HKUST-MPAS physics configuration. `HKUST-MPAS-LIU` is a user-maintained
+derivative for this case; it is not the official HKUST-MPAS main repository.
 
 ### Compile the selected source
 
@@ -210,7 +209,7 @@ They are case-specific choices, not general MPAS-Urban recommendations, and
 should not be copied to another experiment without separate justification.
 
 - Use the case-specific source at commit
-  [`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-Official/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
+  [`57b42fa1d7649117bbf28a69c47697ea8756d268`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/57b42fa1d7649117bbf28a69c47697ea8756d268).
 - This source includes the 10 km CU cutoff used for HRAIN2025.
 - It also includes the two active `ZT = 0.1 * Z0` assignments used by the
   historical experiment, so no manual source edit is required.
