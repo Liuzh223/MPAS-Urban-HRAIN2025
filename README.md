@@ -55,7 +55,7 @@ Recommended local structure:
 ```text
 $HOME/MPAS/
 |-- HKUST-MPAS/                 # standard compiled source
-|-- HKUST-MPAS-LIU/             # optional case-specific compiled source
+|-- HKUST-MPAS-NTDK/            # optional HRAIN2025 cutoff build
 |-- DATA/mpas_static/           # standard and CGLC-LCZ static data
 |-- MPAS-Urban-HRAIN2025/       # this Git repository
 |-- HRAIN2025_INPUT/            # Release grid and GFS file
@@ -72,7 +72,7 @@ export MPAS_BUILD="$HOME/MPAS/HKUST-MPAS"
 test -x "$MPAS_BUILD/atmosphere_model"
 ```
 
-For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-LIU`
+For the optional case-specific build, use `$HOME/MPAS/HKUST-MPAS-NTDK`
 instead. Keep all runtime links in one case from the same `MPAS_BUILD`.
 
 The repository and Release do **not** contain MPAS executables, standard MPAS
