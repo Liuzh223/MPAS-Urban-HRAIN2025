@@ -76,6 +76,7 @@
     config_sfclayer_scheme = 'sf_monin_obukhov_rev'
 
     ! ntdk-grid-cutoff branch: disable NTDK where local dx < 10 km.
+    ! Set 0.0 to disable this cutoff; it is evaluated only for cu_ntiedtke.
     config_cu_disable_dx = 10000.0
     config_urban_physics = true
 /

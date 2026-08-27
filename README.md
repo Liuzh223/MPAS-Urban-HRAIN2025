@@ -37,9 +37,11 @@ suggested local directory name used by these guides for the optional cutoff
 build.
 
 Both choices above are based on MPAS-Atmosphere v8.2.2. The pinned HRAIN2025
-commit adds only case-specific changes, including a targeted backport of the
-selectable BNU soil-category input introduced by official MPAS development for
-v8.3. It is not a whole-tree upgrade to MPAS v8.3.
+commit adds case-specific changes and a targeted backport of the selectable BNU
+soil-category input introduced by official MPAS development for v8.3. It is not
+a whole-tree upgrade to MPAS v8.3. The historical HRAIN2025 static field used
+the updated soil dataset described by Dy and Fung (2016); the official BNU
+option is a publicly downloadable alternative, not the same data product.
 
 > **Compilation is required.** Checking out a branch or commit does not update
 > an existing executable. Compile the selected source to generate
@@ -95,11 +97,35 @@ The supplied `GFS:2025-08-03_00` file is already in WPS intermediate format;
 do not run `ungrib.exe` on it again. For another initialization date, prepare
 all matching intermediate files as explained at the end of Guide 2.
 
-### HRAIN2025 cutoff build: add the BNU soil data
+### Choose the soil-category input
 
-This extra download is required only when reproducing the case-author
-HRAIN2025 configuration with the pinned cutoff build. It is not stored in this
-Git repository or in the v1.0 Release.
+The historical HRAIN2025 experiment and the publicly reproducible tutorial
+alternative use different soil-category files. Record which path you use and
+generate a new static file after changing the choice.
+
+#### Historical HRAIN2025 input
+
+The case-author experiment used the updated global WRF soil map described by
+[Dy and Fung (2016)](https://doi.org/10.1002/2015JD024558): the default
+STATSGO/FAO map is updated where BNU GSDE information is available and a
+land-use water mask is applied.
+
+This historical dataset is not included in this repository or Release and is
+not the same data product as the current NCAR BNU download. The paper's data
+link resolves to this
+[Google Drive folder](https://drive.google.com/drive/folders/0B25bYtJeAd1iMnhVVl9JRFlxYlE?usp=sharing).
+If access is restricted, use the correspondence information on the paper page
+to request the data and processing details from the authors. A direct
+comparison with the historical HRAIN2025 results requires the same data and
+historical initialization setup.
+
+#### Public alternative: official MPAS BNU data
+
+For a new or publicly reproducible run, use the official 30-arc-second BNU top
+soil categories. The selector is available in MPAS-Atmosphere v8.3 and later;
+the pinned HRAIN2025 derivative contains a focused backport of the same
+selector. This option is scientifically related to the historical map but does
+not reproduce the Dy and Fung (2016) dataset exactly.
 
 ```bash
 export MPAS_ROOT="$HOME/MPAS"
@@ -112,7 +138,8 @@ tar -xjf bnu_soiltype_top.tar.bz2
 test -s "$MPAS_ROOT/DATA/mpas_static/bnu_soiltype_top/index"
 ```
 
-For the HRAIN2025 cutoff case, set the static-stage namelist option:
+Set the static-stage namelist option only with MPAS v8.3+ or the documented
+backport:
 
 ```fortran
 config_soilcat_data = 'BNU'
@@ -120,9 +147,10 @@ config_soilcat_data = 'BNU'
 
 This changes the static soil-category field. It does not replace the
 time-dependent soil moisture or soil temperature supplied by GFS. If a static
-file was previously generated with STATSGO, regenerate it after selecting BNU.
-With the standard `hkust-dev` v8.2.2 source, omit this option and use the
-standard STATSGO dataset.
+file was previously generated with another soil map, regenerate it in a
+separate case directory after selecting BNU. With standard `hkust-dev` v8.2.2,
+the selector is unavailable; use the pinned backport, upgrade to MPAS v8.3+, or
+omit the option and retain STATSGO.
 
 ## What the downloads contain
 
@@ -152,7 +180,8 @@ MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
 ```
 
 The repository and Release do **not** contain MPAS executables, standard MPAS
-static data, CGLC-LCZ data, BNU soil-category data,
+static data, CGLC-LCZ data, the historical Dy and Fung (2016) dataset, official BNU
+soil-category data,
 `vertical_levels/urban_ZR_75.txt`, generated static or initial-condition
 files, model output, or GFS files for other times.
 
@@ -165,7 +194,8 @@ under one MPAS root:
 $HOME/MPAS/
 |-- HKUST-MPAS/                 # standard compiled source
 |-- HKUST-MPAS-NTDK/            # optional HRAIN2025 cutoff build
-|-- DATA/mpas_static/           # standard, CGLC-LCZ, and optional BNU data
+|-- DATA/
+|   `-- mpas_static/            # standard, CGLC-LCZ, and optional BNU data
 |-- MPAS-Urban-HRAIN2025/       # this Git repository
 |-- HRAIN2025_INPUT/            # Release grid and GFS file
 `-- HRAIN2025_30km_500m/        # independent case directory
@@ -207,12 +237,15 @@ Use separate case directories when comparing source versions.
 | `config_len_disp` | `500.0` m |
 | Urban physics | enabled |
 | Optional CU cutoff | `config_cu_disable_dx = 10000.0`, case-specific source only |
-| Static soil categories | BNU, case-specific source only |
+| Historical static soil categories | Dy and Fung (2016) updated global WRF soil map |
+| Public soil alternative | Official MPAS BNU 30-arc-second top categories |
 
 Guide 3 contains the complete physics configuration and required symbolic
 links. With the standard `hkust-dev` source, remove or comment out
 `config_cu_disable_dx`; this switch is available only in the cutoff-capable
-case-specific build.
+case-specific build. In that build, `10000.0` disables New Tiedtke convection
+where local grid spacing is below 10 km; setting the value to `0.0` disables the
+cutoff itself, so New Tiedtke is not suppressed by this threshold.
 
 ## Reference configuration files
 
@@ -235,11 +268,17 @@ These are case-specific choices, not general MPAS-Urban recommendations.
 
 - Use the pinned source commit
   [`7c1610b8f41781c2433f780bd7496da63b25a920`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/7c1610b8f41781c2433f780bd7496da63b25a920).
-- The pinned source contains the 10 km CU cutoff used for this case.
+- The pinned source contains the 10 km CU cutoff used for this case. Set
+  `config_cu_disable_dx = 0.0` when the cutoff should be inactive.
+- The historical static interpolation used the updated global WRF soil map
+  described by Dy and Fung (2016). This data is not redistributed
+  here; request access through the paper authors when an exact comparison is
+  required.
 - It adds the `config_soilcat_data` selector backported from official MPAS
-  development. Download the official BNU static dataset, set
-  `config_soilcat_data = 'BNU'` during static interpolation, and regenerate
-  the static file.
+  development. For the public alternative, download the official BNU static
+  dataset, set `config_soilcat_data = 'BNU'` during static interpolation, and
+  regenerate the static file. Do not label this alternative as an exact
+  reproduction of the historical soil field.
 - It also contains the two active `ZT = 0.1 * Z0` assignments used by the
   historical experiment, so no manual source edit or rainfall-branch checkout
   is required.
