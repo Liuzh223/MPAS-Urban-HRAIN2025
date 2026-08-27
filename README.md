@@ -101,12 +101,12 @@ dataset is not included in this repository. To make a simulation fully
 comparable with HRAIN2025, consult the paper and contact its authors to obtain
 the same dataset and processing details.
 
-If the historical dataset is unavailable, an HRAIN2025 run may select the
-official MPAS BNU soil data as a public approximation. This more closely
+If the Dy and Fung (2016) dataset is unavailable, an HRAIN2025 run may select
+the official MPAS BNU soil data as a public approximation. This more closely
 reflects the BNU-based update described in the paper than retaining the default
-STATSGO/FAO data alone, but it is still not strictly identical to the historical
-input. The selector is available in MPAS v8.3+, and the pinned HRAIN2025 source
-includes it as a focused backport.
+STATSGO/FAO data alone, but it is still not strictly identical to the soil
+dataset used in HRAIN2025. The selector is available in MPAS v8.3+, and the
+pinned HRAIN2025 source includes it as a focused backport.
 
 ```bash
 export MPAS_ROOT="$HOME/MPAS"
@@ -156,7 +156,7 @@ MPAS-Urban_HRAIN2025_30km-to-500m_grid-and-GFS2025080300_v1.0.tar.gz
 ```
 
 The repository and Release do **not** contain MPAS executables, standard MPAS
-static data, CGLC-LCZ data, the historical Dy and Fung (2016) dataset, official BNU
+static data, CGLC-LCZ data, the Dy and Fung (2016) dataset, official BNU
 soil-category data,
 `vertical_levels/urban_ZR_75.txt`, generated static or initial-condition
 files, model output, or GFS files for other times.
