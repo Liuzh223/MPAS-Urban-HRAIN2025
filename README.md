@@ -101,12 +101,12 @@ dataset is not included in this repository. To make a simulation fully
 comparable with HRAIN2025, consult the paper and contact its authors to obtain
 the same dataset and processing details.
 
-If the Dy and Fung (2016) dataset is unavailable, an HRAIN2025 run may select
-the official MPAS BNU soil data as a public approximation. This more closely
-reflects the BNU-based update described in the paper than retaining the default
-STATSGO/FAO data alone, but it is still not strictly identical to the soil
-dataset used in HRAIN2025. The selector is available in MPAS v8.3+, and the
-pinned HRAIN2025 source includes it as a focused backport.
+If the Dy and Fung (2016) dataset is unavailable, you may use the official MPAS
+BNU soil data. These data are publicly downloadable and are similar to, but not
+identical to, the soil dataset used in HRAIN2025. MPAS v8.3+ provides the
+`config_soilcat_data` option. The pinned HRAIN2025 source remains based on
+v8.2.2 but adds this option from MPAS v8.3+. Standard `hkust-dev` v8.2.2 does
+not provide this option and can use only its default STATSGO soil-category data.
 
 ```bash
 export MPAS_ROOT="$HOME/MPAS"
@@ -119,10 +119,11 @@ tar -xjf bnu_soiltype_top.tar.bz2
 test -s "$MPAS_ROOT/DATA/mpas_static/bnu_soiltype_top/index"
 ```
 
-For the BNU static stage, set:
+For MPAS v8.3+ or the pinned HRAIN2025 source, remove the leading `!` only when
+you choose BNU for the static stage:
 
 ```fortran
-config_soilcat_data = 'BNU'
+! config_soilcat_data = 'BNU'  ! optional BNU data
 ```
 
 Regenerate the static file after changing the soil input. Guide 2 explains the
@@ -236,6 +237,10 @@ Reference namelists:
 
 - [`config/namelist.init_atmosphere`](config/namelist.init_atmosphere)
 - [`config/namelist.atmosphere`](config/namelist.atmosphere)
+
+The BNU line in the initialization namelist is commented out by default. Enable
+it only with MPAS v8.3+ or the pinned HRAIN2025 source and only when you have
+chosen the BNU data for static-file generation.
 
 ## Case-specific reproducibility settings
 

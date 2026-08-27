@@ -28,10 +28,11 @@
     config_geog_data_path = '../mpas_static'
     config_landuse_data = 'CGLC_LCZ'
 
-    ! Publicly downloadable approximation to the Dy and Fung (2016) soil input.
-    ! Requires MPAS v8.3+ or the pinned HRAIN2025 backport. This official BNU
-    ! product does not reproduce the Dy and Fung (2016) field exactly.
-    config_soilcat_data = 'BNU'
+    ! Optional BNU soil data. Use only with MPAS v8.3+ or the pinned HRAIN2025
+    ! source, which remains based on v8.2.2 but adds this option from v8.3+.
+    ! These data are similar to, but not identical to, the Dy and Fung (2016)
+    ! soil dataset.
+    ! config_soilcat_data = 'BNU'
 
     config_topo_data = 'GTOPO30'
     config_vegfrac_data = 'MODIS'
