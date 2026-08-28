@@ -104,9 +104,11 @@ the same dataset and processing details.
 If the Dy and Fung (2016) dataset is unavailable, you may use the official MPAS
 BNU soil data. These data are publicly downloadable and are similar to, but not
 identical to, the soil dataset used in HRAIN2025. MPAS v8.3+ provides the
-`config_soilcat_data` option. The pinned HRAIN2025 source remains based on
-v8.2.2 but adds this option from MPAS v8.3+. Standard `hkust-dev` v8.2.2 does
-not provide this option and can use only its default STATSGO soil-category data.
+`config_soilcat_data` option. The [`ntdk-grid-cutoff` branch of
+`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff)
+remains based on v8.2.2 but adds this option from MPAS v8.3+. Standard
+`hkust-dev` v8.2.2 does not provide this option and can use only its default
+STATSGO soil-category data.
 
 ```bash
 export MPAS_ROOT="$HOME/MPAS"
@@ -119,15 +121,18 @@ tar -xjf bnu_soiltype_top.tar.bz2
 test -s "$MPAS_ROOT/DATA/mpas_static/bnu_soiltype_top/index"
 ```
 
-For MPAS v8.3+ or the pinned HRAIN2025 source, remove the leading `!` only when
-you choose BNU for the static stage:
+If you are using the [`ntdk-grid-cutoff` branch of
+`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff)
+and choose the optional BNU soil data, remove the leading `!` before generating
+the static file:
 
 ```fortran
-! config_soilcat_data = 'BNU'  ! optional BNU data
+config_soilcat_data = 'BNU'  ! optional BNU data
 ```
 
-Regenerate the static file after changing the soil input. Guide 2 explains the
-version requirements and initialization details.
+Otherwise, keep this line commented. Standard `HKUST-MPAS` `hkust-dev` v8.2.2
+does not provide this option. MPAS v8.3+ also supports it. Regenerate the static
+file after changing the soil input. Guide 2 explains the initialization details.
 
 ## What the downloads contain
 
@@ -239,15 +244,16 @@ Reference namelists:
 - [`config/namelist.atmosphere`](config/namelist.atmosphere)
 
 The BNU line in the initialization namelist is commented out by default. Enable
-it only with MPAS v8.3+ or the pinned HRAIN2025 source and only when you have
-chosen the BNU data for static-file generation.
+it only with MPAS v8.3+ or the `ntdk-grid-cutoff` branch of
+`Liuzh223/HKUST-MPAS-LIU`, and only when you have chosen the BNU data for
+static-file generation.
 
 ## Case-specific reproducibility settings
 
 This section is only for reproducing the case-author HRAIN2025 configuration.
 These are case-specific choices, not general MPAS-Urban recommendations.
 
-- Use the pinned source commit
+- Use the `ntdk-grid-cutoff` branch pinned at commit
   [`7c1610b8f41781c2433f780bd7496da63b25a920`](https://github.com/Liuzh223/HKUST-MPAS-LIU/commit/7c1610b8f41781c2433f780bd7496da63b25a920).
 - The pinned source contains the 10 km CU cutoff used for this case. Set
   `config_cu_disable_dx = 0.0` when the cutoff should be inactive.
