@@ -95,20 +95,14 @@ all matching intermediate files as explained at the end of Guide 2.
 
 ### Soil data for this case
 
-The soil data used in HRAIN2025 come from the updated global WRF soil dataset
-described by [Dy and Fung (2016)](https://doi.org/10.1002/2015JD024558). This
-dataset is not included in this repository. To make a simulation fully
-comparable with HRAIN2025, consult the paper and contact its authors to obtain
-the same dataset and processing details.
+HRAIN2025 used the updated global WRF soil dataset described by
+[Dy and Fung (2016)](https://doi.org/10.1002/2015JD024558). This dataset is not
+included in this repository. For a fully comparable simulation, consult the
+paper and contact its authors for the same data and processing details.
 
-If the Dy and Fung (2016) dataset is unavailable, you may use the official MPAS
-BNU soil data. These data are publicly downloadable and are similar to, but not
-identical to, the soil dataset used in HRAIN2025. MPAS v8.3+ provides the
-`config_soilcat_data` option. The [`ntdk-grid-cutoff` branch of
-`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff)
-remains based on v8.2.2 but adds this option from MPAS v8.3+. Standard
-`hkust-dev` v8.2.2 does not provide this option and can use only its default
-STATSGO soil-category data.
+If that dataset is unavailable, you may use the publicly downloadable official
+MPAS BNU soil data. The BNU data are similar to, but not identical to, the soil
+data used in HRAIN2025.
 
 ```bash
 export MPAS_ROOT="$HOME/MPAS"
@@ -121,18 +115,16 @@ tar -xjf bnu_soiltype_top.tar.bz2
 test -s "$MPAS_ROOT/DATA/mpas_static/bnu_soiltype_top/index"
 ```
 
-If you are using the [`ntdk-grid-cutoff` branch of
-`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff)
-and choose the optional BNU soil data, remove the leading `!` before generating
-the static file:
+To use BNU, set the following option before generating the static file:
 
 ```fortran
-config_soilcat_data = 'BNU'  ! optional BNU data
+config_soilcat_data = 'BNU'
 ```
 
-Otherwise, keep this line commented. Standard `HKUST-MPAS` `hkust-dev` v8.2.2
-does not provide this option. MPAS v8.3+ also supports it. Regenerate the static
-file after changing the soil input. Guide 2 explains the initialization details.
+This option is supported by MPAS v8.3+ and by the [`ntdk-grid-cutoff` branch of
+`Liuzh223/HKUST-MPAS-LIU`](https://github.com/Liuzh223/HKUST-MPAS-LIU/tree/ntdk-grid-cutoff),
+which remains based on v8.2.2. Do not enable it with standard `HKUST-MPAS`
+`hkust-dev` v8.2.2. Regenerate the static file whenever the soil input changes.
 
 ## What the downloads contain
 
