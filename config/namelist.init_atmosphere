@@ -25,7 +25,7 @@
 
 &data_sources
     ! Static geographical data are stored one level above the run directory.
-    config_geog_data_path = '../mpas_static'
+    config_geog_data_path = '../DATA/mpas_static'
     config_landuse_data = 'CGLC_LCZ'
 
     ! Optional BNU soil data. Use only with MPAS v8.3+ or the pinned HRAIN2025

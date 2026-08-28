@@ -53,7 +53,8 @@ commit is a case-specific derivative, not a whole-tree upgrade to MPAS v8.3.
 3. Follow [Guide 2 - Prepare the mesh and initialize HRAIN2025](docs/MPAS_URBAN_INITIALIZATION_GUIDE.pdf)
    to generate the static and initial-condition files.
 4. Follow [Guide 3 - Run HRAIN2025](docs/MPAS_URBAN_RUNNING_GUIDE.pdf)
-   to prepare the independent case directory and launch the atmosphere model.
+   to enter the case directory created in Guide 2, link the selected build, and
+   launch the atmosphere model.
 
 > **Beginner shortcut:** use the supplied grid and GFS intermediate file. You
 > do not need to regenerate the mesh or run WPS for the tutorial date.
